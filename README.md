@@ -77,4 +77,6 @@ Bring up the virtual machine:
     ==> default: 2014-11-19 09:46:54:701249:
     ==> default: You can access horizon web UI http://192.168.33.10/horizon
     ==> default: You can access OpenContrail web UI http://192.168.33.10:8080
+    ==> default: Username password is admin/secret123
+    ==> default: ssh access via root/secret
     ==> default: all done.
