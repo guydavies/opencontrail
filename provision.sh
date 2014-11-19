@@ -273,6 +273,8 @@ fab setup_all:reboot='False'
 
 echo "You can access horizon web UI http://$MYIP/horizon"
 echo "You can access OpenContrail web UI http://$MYIP:8080"
+echo "Username password is admin/secret123"
+echo "ssh access via root/$ROOTPWD'
 
 echo "all done."
 
