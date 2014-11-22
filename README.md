@@ -80,3 +80,113 @@ Bring up the virtual machine:
     ==> default: Username password is admin/secret123
     ==> default: ssh access via root/secret
     ==> default: all done.
+    ==> default: ***************************************************
+    ==> default: *   PLEASE RELOAD THIS VAGRANT BOX BEFORE USE     *
+    ==> default: ***************************************************
+
+From here, please reboot the virtual machine in order for the vrouter kernel module to be loaded and configured correctly:
+
+    $ vagrant reload
+    ==> default: Attempting graceful shutdown of VM...
+    ==> default: Checking if box 'ubuntu/trusty64' is up to date...
+    ==> default: Clearing any previously set forwarded ports...
+    ==> default: Clearing any previously set network interfaces...
+    ==> default: Preparing network interfaces based on configuration...
+        default: Adapter 1: nat
+        default: Adapter 2: hostonly
+    ==> default: Forwarding ports...
+        default: 22 => 2222 (adapter 1)
+    ==> default: Running 'pre-boot' VM customizations...
+    ==> default: Booting VM...
+    ==> default: Waiting for machine to boot. This may take a few minutes...
+        default: SSH address: 127.0.0.1:2222
+        default: SSH username: vagrant
+        default: SSH auth method: private key
+        default: Warning: Connection timeout. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+        default: Warning: Remote connection disconnect. Retrying...
+    ==> default: Machine booted and ready!
+    ==> default: Checking for guest additions in VM...
+    ==> default: Configuring and enabling network interfaces...
+    ==> default: Mounting shared folders...
+        default: /vagrant => /Users/mwiget/projects/opencontrail
+    ==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
+    ==> default: to force provisioning. Provisioners marked to run always will still run.
+    $
+    
+Log into contrail via ssh and check that all the services are running correctly. This can take a few minutes to complete:
+    
+    $ vagrant ssh
+    Welcome to Ubuntu 14.04.1 LTS (GNU/Linux 3.13.0-39-generic x86_64)
+    
+     * Documentation:  https://help.ubuntu.com/
+    
+      System information as of Sat Nov 22 16:21:22 UTC 2014
+    
+      System load:  0.45              Processes:             134
+      Usage of /:   6.3% of 39.34GB   Users logged in:       0
+      Memory usage: 3%                IP address for eth0:   10.0.2.15
+      Swap usage:   0%                IP address for vhost0: 192.168.33.10
+    
+      Graph this data and manage this system at:
+        https://landscape.canonical.com/
+    
+      Get cloud support with Ubuntu Advantage Cloud Guest:
+        http://www.ubuntu.com/business/services/cloud
+    
+    
+    vagrant@vagrant-ubuntu-trusty-64:~$ contrail-status
+    == Contrail vRouter ==
+    supervisor-vrouter:           active
+    contrail-vrouter-agent        active
+    contrail-vrouter-nodemgr      active
+    
+    == Contrail Control ==
+    supervisor-control:           active
+    contrail-control              active
+    contrail-control-nodemgr      active
+    contrail-dns                  active
+    contrail-named                active
+    
+    == Contrail Analytics ==
+    supervisor-analytics:         active
+    contrail-analytics-api        active
+    contrail-analytics-nodemgr    active
+    contrail-collector            active
+    contrail-query-engine         active
+    
+    == Contrail Config ==
+    supervisor-config:            active
+    contrail-api:0                active
+    contrail-config-nodemgr       active
+    contrail-discovery:0          active
+    contrail-schema               active
+    contrail-svc-monitor          active
+    ifmap                         active
+    
+    == Contrail Web UI ==
+    supervisor-webui:             active
+    contrail-webui                active
+    contrail-webui-middleware     active
+    redis-webui                   active
+    
+    == Contrail Database ==
+    supervisord-contrail-database:active
+    contrail-database             active
+    contrail-database-nodemgr     active
+    
+    == Contrail Support Services ==
+    supervisor-support-service:   active
+    rabbitmq-server               active
+
