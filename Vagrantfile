@@ -8,13 +8,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
+  private_net_ip = "192.168.33.10"
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
+  config.vm.provider "vmware_fusion" do |v, override|
+      override.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/vmware/opscode_ubuntu-14.04_chef-provisionerless.box"
+  end
+
   config.vm.provider "virtualbox" do |v|
     v.memory = 8096
     v.cpus = 2
   end 
+  config.vm.provider "vmware_fusion" do |vf|
+      vf.vmx["numvcpus"] = "2"
+      vf.vmx["memsize"] = "8096"
+  end
   config.vm.provision "shell", path: "provision.sh"
 
   # Disable automatic box update checking. If you disable this, then
@@ -29,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "#{private_net_ip}", auto_config: true
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
