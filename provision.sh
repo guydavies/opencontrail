@@ -13,7 +13,7 @@ echo "installing curl ..."
 apt-get install -y curl 
 echo "Getting opencontrail packages ..."
 curl -L http://www.opencontrail.org/ubuntu-repo/repo_key | sudo apt-key add -
-curl –L http://www.opencontrail.org/ubuntu-repo/add-apt-and-update | sudo OPENSTACK=icehouse CONTRAIL=r120 DISTRO=ubuntu1404 sh
+curl http://www.opencontrail.org/ubuntu-repo/add-apt-and-update | sudo OPENSTACK=icehouse CONTRAIL=r120 DISTRO=ubuntu1404 sh
 echo "running apt-get update again to fix redundant entries"
 apt-get update >/dev/null 2>&1
 echo "install dpkg-dev contrail-setup contrail-fabric-utils ..."
@@ -274,9 +274,10 @@ fab setup_all:reboot='False'
 echo "You can access horizon web UI http://$MYIP/horizon"
 echo "You can access OpenContrail web UI http://$MYIP:8080"
 echo "Username password is admin/secret123"
-echo "ssh access via root/$ROOTPWD'
+echo "ssh access via root/$ROOTPWD"
 
 echo "all done."
 
-reboot &
-
+echo "***************************************************"
+echo "*   PLEASE RELOAD THIS VAGRANT BOX BEFORE USE     *"
+echo "***************************************************"
