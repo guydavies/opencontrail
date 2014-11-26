@@ -264,6 +264,10 @@ EOF
 echo "install nodejs ..."
 apt-get install nodejs=0.8.15-1contrail1
 
+# Grab linux headers used by linux distro, so vrouter.ko can be built
+# for localhost
+apt-get install -y linux-headers-$(uname -r)
+
 echo "install the packages and provision the (single node) cluster."
 echo "fab install_contrail ..."
 cd /opt/contrail/utils
