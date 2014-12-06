@@ -7,6 +7,8 @@ Currently working with OpenContrail 1.20.
 
 the Vagrantfile starts with ubuntu/trusty64 cloud image (14.04), then downloads opencontrail binaries for 1.20, creates a testbed.py file for a single node install, then install and setups opencontrail on the NAT'd network of VirtualBox. 
 
+Besides the VM contrail, there are two optional VM's, compute1 and compute2, which install enough packages to provision and manage these VM's from the main contrail node via fab commands.
+
 Howto use it:
 
 Clone this repository to an empty directory:

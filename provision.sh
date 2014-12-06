@@ -1,10 +1,28 @@
 #!/usr/bin/env bash
 
+HOSTNAME=$1
+IPADDR=$2
+
 echo "Fix ssh to allow password login"
 ROOTPWD="secret"
 echo "root:secret"|chpasswd
 sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+# Disable LANG_ALL to avoid warnings when logging in from OSX
+sed -i 's/^AcceptEnv LANG LC_*/#AcceptEnv LANG LC_*/' /etc/ssh/sshd_config
+
 service ssh restart
+
+echo "Setting hostname to $HOSTNAME"
+hostname $HOSTNAME
+cat <<EOF > /etc/hostname
+$HOSTNAME
+EOF
+
+/sbin/ifconfig eth1 $IPADDR
+cat <<EOF >> /etc/hosts
+$IPADDR $HOSTNAME
+EOF
+hostname $HOSTNAME
 
 echo "Installing OpenContrail ..."
 echo "apt-get update ..."
@@ -42,9 +60,6 @@ ssh-copy-id -i ${PUBKEY_FILE} ${USER}@127.0.0.1
 sed -i -e 's/def create_install_repo_node\(.*\):/def create_install_repo_node\1:\n    return\n/' /opt/contrail/utils/fabfile/tasks/install.py
 sed -i -e "s/if '1.04' in rls:/if rls and '1.04' in rls:/" /opt/contrail/utils/fabfile/tasks/provision.py
 sed -i -e 's/Xss220k/Xss300k/' /opt/contrail/contrail_installer/contrail_setup_utils/setup.py
-
-# Disable LANG_ALL to avoid warnings when logging in from OSX
-sed -i 's/^AcceptEnv LANG LC_*/#AcceptEnv LANG LC_*/' /etc/ssh/sshd_config
 
 # set ssh key pointer in example testbeds
 ${ECHO} echo "env.key_filename='${PUBKEY_FILE}'" >> /opt/contrail/utils/fabfile/testbeds/testbed_singlebox_example.py
@@ -285,3 +300,4 @@ echo "all done."
 echo "***************************************************"
 echo "*   PLEASE RELOAD THIS VAGRANT BOX BEFORE USE     *"
 echo "***************************************************"
+
