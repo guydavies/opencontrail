@@ -192,3 +192,60 @@ Log into contrail via ssh and check that all the services are running correctly.
     supervisor-support-service:   active
     rabbitmq-server               active
 
+Adding compute1 node
+--------------------
+
+Bring up compute1 VM via vagrant:
+
+    $ vagrant up compute1
+    
+The IP address is hard coded in Vagrantfile in environment variable private_net_compute1_ip (192.168.33.11).
+Log into contrail and modify testbed.py according to the following patch (basically defining host2, setting root password and adding it as compute node):
+
+    --- testbed.py.orig	2014-12-03 12:50:44.713138163 +0000
+    +++ testbed.py	2014-12-03 12:51:18.369957011 +0000
+    @@ -1,6 +1,7 @@
+     from fabric.api import env
+     #Management ip addresses of hosts in the cluster
+     host1 = 'root@192.168.33.10'
+    +host2 = 'root@192.168.33.11'
+    
+     #External routers if any
+     #for eg.
+    @@ -15,11 +16,11 @@
+    
+     #Role definition of the hosts.
+     env.roledefs = {
+    -    'all': [host1],
+    +    'all': [host1, host2],
+         'cfgm': [host1],
+         'openstack': [host1],
+         'control': [host1],
+    -    'compute': [host1],
+    +    'compute': [host1, host2],
+         'collector': [host1],
+         'webui': [host1],
+         'database': [host1],
+    @@ -40,6 +41,7 @@
+     #Passwords of each host
+     env.passwords = {
+         host1: 'secret',
+    +    host2: 'secret',
+    
+         host_build: 'secret',
+     }
+    @@ -47,6 +49,7 @@
+     #For reimage purpose
+     env.ostypes = {
+         host1:'ubuntu',
+    +    host2:'ubuntu',
+     }
+    
+     #OPTIONAL ANALYTICS CONFIGURATION
+     
+
+Then execute the following fab command as root:
+
+    cd /opt/contrail/utils
+    fab add_vrouter_node:root@192.168.33.11
+
