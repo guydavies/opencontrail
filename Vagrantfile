@@ -9,19 +9,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # options are documented and commented below. For a complete reference,
   # please see the online documentation at vagrantup.com.
   # Every Vagrant virtual environment requires a box to build off of.
+  #
+  
   config.vm.box = "ubuntu/trusty64"
   config.vm.provider "vmware_fusion" do |v, override|
-      override.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/vmware/opscode_ubuntu-14.04_chef-provisionerless.box"
+      override.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vmwarefusion.box"
   end
 
-  private_net_contrail_ip = "192.168.33.10"
-  private_net_compute1_ip = "192.168.33.11"
-  private_net_compute2_ip = "192.168.33.12"
+  private_net_contrail_ip = "192.168.100.10"
+  private_net_compute1_ip = "192.168.100.11"
+  private_net_compute2_ip = "192.168.100.12"
 
   # single node Contrail with openstack Node
   #
   config.vm.define "contrail", primary: true do |contrail|
-
 
     contrail.vm.provider "virtualbox" do |v|
       v.memory = 8096
@@ -34,6 +35,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # argument is used to set the VM's hostname
     #
+
     contrail.vm.provision "shell", path: "provision.sh", args: "contrail #{private_net_contrail_ip}"
 
     # Create a private network, which allows host-only access to the machine

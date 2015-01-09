@@ -3,9 +3,9 @@ opencontrail
 
 Use vagrant to install various flavours of opencontrail locally for testing.
 The initial version simply follows the guidelines found in the quick start guide on http://www.opencontrail.org 
-Currently working with OpenContrail 1.20.
+Currently working with OpenContrail 2.00.
 
-the Vagrantfile starts with ubuntu/trusty64 cloud image (14.04), then downloads opencontrail binaries for 1.20, creates a testbed.py file for a single node install, then install and setups opencontrail on the NAT'd network of VirtualBox. 
+the Vagrantfile starts with ubuntu/trusty64 cloud image (14.04), then downloads opencontrail binaries for 2.00, creates a testbed.py file for a single node install, then install and setups opencontrail on the NAT'd network of VirtualBox. 
 
 Besides the VM contrail, there are two optional VM's, compute1 and compute2, which install enough packages to provision and manage these VM's from the main contrail node via fab commands.
 
@@ -199,7 +199,7 @@ Bring up compute1 VM via vagrant:
 
     $ vagrant up compute1
     
-The IP address is hard coded in Vagrantfile in environment variable private_net_compute1_ip (192.168.33.11).
+The IP address is hard coded in Vagrantfile in environment variable private_net_compute1_ip (192.168.100.11).
 Log into contrail and modify testbed.py according to the following patch (basically defining host2, setting root password and adding it as compute node):
 
     --- testbed.py.orig	2014-12-03 12:50:44.713138163 +0000
@@ -208,7 +208,7 @@ Log into contrail and modify testbed.py according to the following patch (basica
      from fabric.api import env
      #Management ip addresses of hosts in the cluster
      host1 = 'root@192.168.33.10'
-    +host2 = 'root@192.168.33.11'
+    +host2 = 'root@192.168.100.11'
     
      #External routers if any
      #for eg.
@@ -247,5 +247,7 @@ Log into contrail and modify testbed.py according to the following patch (basica
 Then execute the following fab command as root:
 
     cd /opt/contrail/utils
-    fab add_vrouter_node:root@192.168.33.11
+    fab install_vrouter:root@192.168.100.11
+    fab setup_vrouter:root@192.168.100.11
+    fab add_vrouter_node:root@192.168.100.11
 
