@@ -59,6 +59,11 @@ echo "fab install_contrail ..."
 cd /opt/contrail/utils
 fab install_contrail
 
+echo "Enabling SSLv3"
+sed -i 's/^jdk.tls.disabledAlgorithms=SSLv3/#jdk.tls.disabledAlgorithms=SSLv3/' /etc/java-7-openjdk/security/java.security
+# no need to downgrade package. Seems enough to just re-enable SSLv3 with above sed command.
+#apt-get -y install openjdk-7-jre-headless:amd64=7u71-2.5.3-0ubuntu0.14.04.1
+
 echo "fab setup_all ..."
 fab setup_all:reboot='False'
 
