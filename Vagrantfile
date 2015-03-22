@@ -16,6 +16,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       override.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vmwarefusion.box"
   end
 
+  # Support for vagrant-libvirt provider (kvm)
+  config.vm.provider :libvirt do |v, override|
+      override.vm.box = "pcp/basebox-ubuntu-trusty"
+  end
+
   private_net_contrail_ip = "192.168.100.10"
   private_net_compute1_ip = "192.168.100.11"
   private_net_compute2_ip = "192.168.100.12"
@@ -31,6 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     contrail.vm.provider "vmware_fusion" do |vf|
         vf.vmx["numvcpus"] = "2"
         vf.vmx["memsize"] = "8096"
+        vf.vmx["vhv.enable"] = "TRUE"
     end
 
     # argument is used to set the VM's hostname
@@ -74,6 +80,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     compute.vm.provider "vmware_fusion" do |vf|
         vf.vmx["numvcpus"] = "1"
         vf.vmx["memsize"] = "4096"
+        vf.vmx["vhv.enable"] = "TRUE"
     end
     compute.vm.provision "shell", path: "provision-compute.sh", args: "compute2 #{private_net_compute2_ip}"
     compute.vm.network "private_network", ip:  "#{private_net_compute2_ip}", auto_config: false
