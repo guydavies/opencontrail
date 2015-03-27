@@ -67,6 +67,15 @@ sed -i 's/^jdk.tls.disabledAlgorithms=SSLv3/#jdk.tls.disabledAlgorithms=SSLv3/' 
 echo "fab setup_all ..."
 fab setup_all:reboot='False'
 
+echo "getting git ..."
+apt-get install -y git
+
+echo "getting opencontrail-config ..."
+cd ~
+mkdir GIT
+cd GIT
+git clone http://github.com/tonyliu0592/opencontrail-config opencontrail-config
+
 echo "You can access horizon web UI http://$MYIP/horizon"
 echo "You can access OpenContrail web UI http://$MYIP:8080"
 echo "Username password is admin/secret123"
